@@ -6,3 +6,75 @@
     <h2>Bienvenido a la página de reciclaje</h2>
     <p style="color: #22c22f; margin-top: 10px;">Proyecto de reciclaje y comunidad</p>
 {% endblock %}
+
+{% block mapa %}
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.css" type="text/css" />
+
+<style>
+    #map {
+        height: 500px;
+        width: 50%;
+    }
+</style>
+
+<div id="map"></div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
+<script src="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.min.js"></script>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoidG9wYXoyMjIwIiwiYSI6ImNtdnBwcjk0OTAxNTYyenExZ2JkZG5vZXcifQ.ddSZ_pK1T0Tv3YqOhEWXGQ';
+
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/standard',
+        zoom: 12
+    });
+
+    const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        marker: true,
+        placeholder: 'Buscar dirección'
+    });
+
+    map.addControl(geocoder);
+
+    let apiMarkers = [];
+
+    function clearApiMarkers() {
+        apiMarkers.forEach(marker => marker.remove());
+        apiMarkers = [];
+    }
+
+    geocoder.on('result', async (e) => {
+        const [lng, lat] = e.result.geometry.coordinates;
+
+        clearApiMarkers();
+
+        try {
+            const apiUrl = `http://127.0.0.1:8000/puntoslimpios?lat=${lat}&long=${lng}&dist=2`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+
+            data.forEach(item => {
+                const itemLngLat = [item.lng, item.lat];
+
+                const popup = new mapboxgl.Popup({ offset: 25 })
+                    .setHTML(`<h3>${item.address_name}</h3><p>${item.address || ''}</p>`);
+
+                const marker = new mapboxgl.Marker({ color: '#00ff00' })
+                    .setLngLat(itemLngLat)
+                    .setPopup(popup)
+                    .addTo(map);
+
+                apiMarkers.push(marker);
+            });
+
+        } catch (error) {
+            console.error('No se han podido obtener los marcadores:', error);
+        }
+    });
+</script>
+{% endblock %}
