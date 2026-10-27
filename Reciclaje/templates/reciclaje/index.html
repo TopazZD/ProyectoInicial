@@ -7,6 +7,8 @@
     <p style="color: #22c22f; margin-top: 10px;">Proyecto de reciclaje y comunidad</p>
 {% endblock %}
 
+<!-- todo lo que es el mapa -->
+
 {% block mapa %}
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.css" type="text/css" />
@@ -24,19 +26,23 @@
 <script src="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.min.js"></script>
 
 <script>
+    const maxDist = 4 // distancia maxima de puntos limpios (km)
+
     mapboxgl.accessToken = 'pk.eyJ1IjoidG9wYXoyMjIwIiwiYSI6ImNtdnBwcjk0OTAxNTYyenExZ2JkZG5vZXcifQ.ddSZ_pK1T0Tv3YqOhEWXGQ';
 
     const map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/standard',
-        zoom: 12
+        zoom: 10,
+        center: [-70.647827, -33.459204],
     });
 
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
         marker: true,
-        placeholder: 'Buscar dirección'
+        placeholder: 'Buscar dirección',
+        countries: 'cl'
     });
 
     map.addControl(geocoder);
@@ -54,7 +60,7 @@
         clearApiMarkers();
 
         try {
-            const apiUrl = `http://127.0.0.1:8000/puntoslimpios?lat=${lat}&long=${lng}&dist=2`;
+            const apiUrl = `http://127.0.0.1:8000/puntoslimpios?lat=${lat}&long=${lng}&dist=${maxDist}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
 
@@ -62,7 +68,10 @@
                 const itemLngLat = [item.lng, item.lat];
 
                 const popup = new mapboxgl.Popup({ offset: 25 })
-                    .setHTML(`<h3>${item.address_name}</h3><p>${item.address || ''}</p>`);
+                    .setHTML(`
+                    <h3>${item.address_name}</h3>
+                    <p>${item.address_number || ''}</p>
+                    `);
 
                 const marker = new mapboxgl.Marker({ color: '#00ff00' })
                     .setLngLat(itemLngLat)
