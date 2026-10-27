@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,13 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Reciclaje{% endblock %}</title>
 </head>
-<body>
+<body style="background-color: #8ecbe9;">
     <header>
-        <h1>Reciclaje</h1>
+        <div style="background-color: #178508; padding: 1px; border: 2px solid #000000; border-radius: 15px; display: inline-block;"> 
+            <h1> 
+                <span style="color: rgb(241, 243, 241);">ECO</span> 
+                <img src="{% static 'reciclaje/img/OIG3.webp' %}" alt="Logo" style="height: 40px; vertical-align: middle; margin: 0 5px;">
+                <span style="color: rgb(241, 243, 241);">VECINOS</span> 
+            </h1>
+        </div>
     </header>
 
-    <main>
-        {% block content %}{% endblock %}
+    <main>  
+        {% block content %}
+        {% endblock %}
     </main>
 </body>
 </html>
