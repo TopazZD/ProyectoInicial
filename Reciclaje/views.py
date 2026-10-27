@@ -35,6 +35,8 @@ def geo_filter(data, target_lat, target_lng, max_distance):
             
         calculated_dist = haversine(target_lat, target_lng, p_lat, p_lng)
         
+        point["dist"] = str(calculated_dist)
+        
         if calculated_dist < max_distance:
             results.append((calculated_dist, point))
             
