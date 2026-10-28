@@ -71,6 +71,7 @@
                     .setHTML(`
                     <h3>${item.address_name}</h3>
                     <p>${item.address_number || ''}</p>
+                    <p>${parseFloat(item.dist).toFixed(1)}km</p>
                     `);
 
                 const marker = new mapboxgl.Marker({ color: '#00ff00' })

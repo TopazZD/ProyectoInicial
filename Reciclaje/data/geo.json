@@ -180314,7 +180314,7 @@
     {
         "lat": "-33.46773900",
         "status": "open",
-        "lng": "-7.06424700",
+        "lng": "-70.6424700",
         "owner": "Resimple",
         "type": "pv",
         "address_type": "Calle",
@@ -180383,7 +180383,7 @@
         ]
     },
     {
-        "lat": "33.51708600",
+        "lat": "-33.51708600",
         "status": "open",
         "lng": "-70.74382100",
         "owner": "JJVV",
@@ -180439,7 +180439,7 @@
     {
         "lat": "-33.43495530",
         "status": "open",
-        "lng": "70.73370460",
+        "lng": "-70.73370460",
         "owner": "Municipal",
         "type": "pv",
         "address_type": "calle",
@@ -180463,7 +180463,7 @@
     {
         "lat": "-33.41436730",
         "status": "open",
-        "lng": "70.72596030",
+        "lng": "-70.72596030",
         "owner": "Municipal",
         "type": "pv",
         "address_type": "jard\u00edn liberado",
@@ -180487,7 +180487,7 @@
     {
         "lat": "-33.41455770",
         "status": "open",
-        "lng": "70.73290480",
+        "lng": "-70.73290480",
         "owner": "Municipal",
         "type": "pv",
         "address_type": "calle",
