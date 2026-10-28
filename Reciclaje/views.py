@@ -21,3 +21,11 @@ def puntoslimpios(request):
         return JsonResponse(res, safe=False)
     except:
         return JsonResponse({"Error":"No se han podido obtener resultados con los datos dados"})
+
+from django.shortcuts import render
+
+def mapa(request):
+    return render(request, 'reciclaje/mapa.html')
+
+def register(request):
+    return render(request, 'reciclaje/register.html')
