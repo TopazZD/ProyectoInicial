@@ -28,8 +28,6 @@ def puntoslimpios(request):
     except:
         return JsonResponse({"Error":"No se han podido obtener resultados con los datos dados"})
 
-from django.shortcuts import render
-
 def mapa(request):
     return render(request, 'reciclaje/mapa.html')
 
