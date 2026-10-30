@@ -36,7 +36,7 @@ def geo_filter(data, target_lat, target_lng, max_distance, filter = None):
         mats = True
         if filter:
             for material in filter:
-                if material not in point["materials"]:
+                if material not in point.get("materials", []):
                     mats = False
         
         if calculated_dist < max_distance and mats:

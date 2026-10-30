@@ -1,0 +1,13 @@
+{% extends "reciclaje/base.html" %}
+
+{% block title %}Crear cuenta{% endblock %}
+
+{% block content %}
+    <h2>Crear cuenta</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Registrarme</button>
+    </form>
+    <p><a href="{% url 'login' %}" style="color: #7CFC00;">Ya tengo cuenta</a></p>
+{% endblock %}

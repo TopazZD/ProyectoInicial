@@ -1,0 +1,12 @@
+{% extends "reciclaje/base.html" %}
+
+{% block title %}ECOVECINOS{% endblock %}
+
+{% block content %}
+    <h2>Bienvenido a la página de reciclaje</h2>
+    <p>Proyecto de reciclaje y comunidad</p>
+    <p>
+        <button onclick="abrirModal()" style="padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600;">Iniciar sesión</button>
+        &nbsp;¿Eres nuevo? <a href="{% url 'register' %}" style="color: #7CFC00;">Crea tu cuenta</a>
+    </p>
+{% endblock %}
