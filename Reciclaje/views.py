@@ -1,9 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout 
 import json
 from . import funcs
+from .comunas import obtener_comunas, RUTA_GEO
+from .forms import RegistroForm
 
 def inicio(request):  
+    if request.user.is_authenticated:
+        return redirect('mapa')
     return render(request, 'reciclaje/index.html')
 
 def puntoslimpios(request):
