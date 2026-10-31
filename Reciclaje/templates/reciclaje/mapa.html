@@ -83,19 +83,15 @@
     }
 
     function getCheckedAsUrlParamsWithoutPrefix() {
-        // Select all checked checkboxes inside the container[cite: 1]
         const checkedCheckboxes = document.querySelectorAll('#material_checkboxes input[type="checkbox"]:checked');
 
-        // Map each checked checkbox, remove 'material_', and format as a query parameter
         const urlParams = Array.from(checkedCheckboxes)
             .map(cb => {
-                // Remove 'material_' from the start of the ID (or change cb.id to cb.name if preferred)
                 const cleanValue = cb.id.replace(/^material_/, '');
                 return `filter=${encodeURIComponent(cleanValue)}`;
             })
             .join('&');
 
-        // Prepend '&' if there are results, otherwise return an empty string
         return urlParams ? `&${urlParams}` : '';
     }
 
