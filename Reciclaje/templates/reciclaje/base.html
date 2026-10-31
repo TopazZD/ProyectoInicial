@@ -4,79 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Reciclaje{% endblock %}</title>
-    
-    <!-- api fuentes -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        body {
-            background-color: #221e1e;
-            margin: 0;
-            font-family: Georgia, serif;
-            color: #ffffff;
-        }
-    </style>
-</head>
-<body>
-    
-    <!-- BARRA MENU -->
-    <header style="display: flex; justify-content: space-between; align-items: center; background-color: #13ad08b4; padding: 10px 20px; border-bottom: 2px solid #000000;">
-        
-        <!-- LOGO/TITULO izquierda -->
-        <div>
-            <h1 style="margin: 0; font-size: 24px; font-weight: 700; letter-spacing: 1px;">
-                <span style="color: rgb(241, 243, 241);">ECO</span> 
-                <img src="{% static 'Reciclaje/img/OIG3.webp' %}" alt="Logo" style="height: 40px; vertical-align: middle; margin: 0 5px;">
-                <span style="color: rgb(241, 243, 241);">VECINOS</span> 
-            </h1>
-        </div>
+    <title>{% block title %}ECOVECINOS{% endblock %}</title>
 
-        <!-- BOTON puntos limpios/Iniciar Sesion -->
-        <div style="display: flex; gap: 10px; align-items: center;">
-            
-            <!-- Boton mapa (interior) -->
-            <a href="{% url 'mapa' %}" style="text-decoration: none;">
-                <button style="background-color: #f1f3f1; color: #13ad08b4; border: 1px solid #000000; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif;">
-                    Buscar puntos limpios
-                </button>
+    <!-- FUENTE POPPINS-->
+     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'reciclaje/css/styles.css' %}">
+</head>
+
+<body>
+    <!-- BARRA DE NAVEGACION -->
+     <header class="navbar">
+        <!--LOGO-->
+        <a href="{% url 'inicio' %}" class="logo">
+            <span>ECO</span>
+            <img src="{% static 'reciclaje/img/OIG3.webp'%}"
+            alt="logo ECOVECINOS">
+
+            <span>VECINOS</span>
+        </a>
+        <!--ENLACES-->
+        <nav class="nav-links">
+            <a href="{% url 'inicio'%}">Inicio</a>
+            <a href="{% url 'mapa'%}">Buscar Puntos Limpios</a>
+            <a href="#como-reciclar">Cómo Reciclar</a>
+        </nav>
+        <!--BOTONES-->
+        <div class="nav-actions">
+            <a href="{% url 'mapa' %}" class="btn-puntos">
+                Buscar Puntos Limpios
             </a>
 
-            <!-- Boton Iniciar Sesion derecha -->
-            <button onclick="abrirModal()" style="background-color: #f1f3f1; color: #000000; border: 1px solid #000000; padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'Poppins', sans-serif;">
-                Iniciar Sesión
-            </button>
+            {% if user.is_authenticated %}
+                <span class="usuario">
+                    Hola, {{user.username}}
+                </span>
+            
+
+                <from method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-login">
+                        Cerrar Sesión
+                    </button>
+                </from>
+            {% else %}
+                <a href="{% url 'login'}" class="btn-login">
+                    Iniciar Sesión
+                </a>
+            {% endif %}
         </div>
+     </header>
 
-    </header>
+     <!--CONTENIDO PRINCIPAL-->
+     <main>
+        {% block content%}
+        {% endblock %}
 
-    <main style="padding: 20px;">  
-        {% block content %}{% endblock %}
-        {% block mapa %}{% endblock %} <!-- mover ESTO para mover el mapa, esto es todo -->
-    </main>
-
-
-    <!-- Boton Iniciar Sesion (interior) -->
-    <div id="modalLogin" style="display: none; position: fixed; background: #ffffff; color: #000000; padding: 20px; border: 2px solid #178508; border-radius: 10px; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1000; box-shadow: 0px 4px 15px rgba(0,0,0,0.5);">
-        <h3 style="margin-top: 0; color: #178508;">Iniciar Sesión</h3>
-        <form method="POST">
-            {% csrf_token %}
-            <input type="text" placeholder="Usuario" style="display: block; margin-bottom: 10px; padding: 8px; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px;">
-            <input type="password" placeholder="Contraseña" style="display: block; margin-bottom: 10px; padding: 8px; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px;">
-            <button type="submit" style="background-color: #178508; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%;">Entrar</button>
-        </form>
-        <button onclick="cerrarModal()" style="margin-top: 10px; background-color: #e0e0e0; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold;">Cerrar</button>
-    </div>
-
-    <!-- SCRIPT  ABRIR/CERRAR EL MODAL(mapa) -->
-    <script>
-        function abrirModal() {
-            document.getElementById('modalLogin').style.display = 'block';
-        }
-        function cerrarModal() {
-            document.getElementById('modalLogin').style.display = 'none';
-        }
-    </script>
-
+        {% block mapa %}
+        {% endblock %}
+     </main>
 </body>
 </html>

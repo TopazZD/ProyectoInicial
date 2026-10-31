@@ -1,0 +1,111 @@
+/* CONFIGURACIÓN GENERAL */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f6f8f3;
+    color: #102b23;
+}
+
+/* BARRA DE NAVEGACION */
+.navbar {
+    background: linear-gradient(90deg, #39863d,#14552c);
+    min-height: 95px;
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+}
+
+/* LOGO */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    text-decoration: none;
+    font-family: Georgia, serif;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.logo img {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+}
+
+/* ENLACES DE NAVEGACION */
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: #c5e8ae;
+}
+
+/* BOTONES */
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-puntos,
+.btn-login {
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.btn-puntos {
+    background-color: white;
+    color: #14552c;
+    border: 1px solid white;
+}
+
+.btn-login {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.btn-login:hover {
+    background-color: white;
+    color: #14552c;
+}
+
+.usuario {
+    color: white;
+}
+
+/* PANTALLAS MAS CHICAS */
+@media (max-width: 1200px) {
+    .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .nav-links{
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
