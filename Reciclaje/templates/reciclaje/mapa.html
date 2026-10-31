@@ -17,13 +17,37 @@
     #map {
         height: 500px;
         width: 50%;
+        float: left;
     }
     #marker_popup {
         color: #000000
     }
+    #material_checkboxes {
+        float: right;
+        font-size: 40px;
+    }
 </style>
 
 <div id="map"></div> <!-- este div tiene todo el mapa dentro -->
+
+<div id="material_checkboxes">
+    <input type="checkbox" id="material_glass" name="material_glass" value="Vidrio">
+    <label for="material_glass">Vidrio<br>
+    <input type="checkbox" id="material_paper" name="material_paper" value="Papel">
+    <label for="material_paper">Papel<br>
+    <input type="checkbox" id="material_paperboard" name="material_paperboard" value="Vidrio">
+    <label for="material_paperboard">Paperboard<br>
+    <input type="checkbox" id="material_tetrapack" name="material_tetrapack" value="Tetrapack">
+    <label for="material_tetrapack">Tetrapack<br>
+    <input type="checkbox" id="material_plastic" name="material_plastic" value="Plastico">
+    <label for="material_plastic">Plastico<br>
+    <input type="checkbox" id="material_metal" name="material_metal" value="Metal">
+    <label for="material_metal">Metal<br>
+    <input type="checkbox" id="material_power_bank" name="material_power_bank" value="Batería">
+    <label for="material_power_bank">Batería<br>
+    <input type="checkbox" id="material_phone" name="material_phone" value="Telefono">
+    <label for="material_phone">Telefono<br>        
+</div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 <script src="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.min.js"></script>
@@ -51,10 +75,28 @@
     map.addControl(geocoder);
 
     let apiMarkers = [];
+    let materials = [];
 
     function clearApiMarkers() {
         apiMarkers.forEach(marker => marker.remove());
         apiMarkers = [];
+    }
+
+    function getCheckedAsUrlParamsWithoutPrefix() {
+        // Select all checked checkboxes inside the container[cite: 1]
+        const checkedCheckboxes = document.querySelectorAll('#material_checkboxes input[type="checkbox"]:checked');
+
+        // Map each checked checkbox, remove 'material_', and format as a query parameter
+        const urlParams = Array.from(checkedCheckboxes)
+            .map(cb => {
+                // Remove 'material_' from the start of the ID (or change cb.id to cb.name if preferred)
+                const cleanValue = cb.id.replace(/^material_/, '');
+                return `filter=${encodeURIComponent(cleanValue)}`;
+            })
+            .join('&');
+
+        // Prepend '&' if there are results, otherwise return an empty string
+        return urlParams ? `&${urlParams}` : '';
     }
 
     geocoder.on('result', async (e) => {
@@ -63,7 +105,7 @@
         clearApiMarkers();
 
         try {
-            const apiUrl = `http://127.0.0.1:8000/puntoslimpios?lat=${lat}&long=${lng}&dist=${maxDist}`;
+            const apiUrl = `http://127.0.0.1:8000/puntoslimpios?lat=${lat}&long=${lng}&dist=${maxDist}${getCheckedAsUrlParamsWithoutPrefix()}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
 
