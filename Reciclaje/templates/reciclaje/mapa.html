@@ -18,6 +18,9 @@
         height: 500px;
         width: 50%;
     }
+    #marker_popup {
+        color: #000000
+    }
 </style>
 
 <div id="map"></div> <!-- este div tiene todo el mapa dentro -->
@@ -67,11 +70,13 @@
             data.forEach(item => {
                 const itemLngLat = [item.lng, item.lat];
 
-                const popup = new mapboxgl.Popup({ offset: 25 })
+                const popup = new mapboxgl.Popup({ offset: 4 })
                     .setHTML(`
+                    <div id="marker_popup">
                     <h3>${item.address_name}</h3>
                     <p>${item.address_number || ''}</p>
                     <p>${parseFloat(item.dist).toFixed(1)}km</p>
+                    </div>
                     `);
 
                 const marker = new mapboxgl.Marker({ color: '#00ff00' })
