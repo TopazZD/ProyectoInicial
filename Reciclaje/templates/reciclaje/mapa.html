@@ -7,11 +7,11 @@
     <p style="color: #ffffff; margin-top: 10px;">pues chad no?</p>
 {% endblock %}
 
-<!-- todo lo que es el mapa -->
-
 {% block mapa %}
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.css" type="text/css" />
+
+<!-- estilos de la pagina -->
 
 <style>
     #map {
@@ -28,40 +28,67 @@
         font-size: 30px;
     }
     #map-geocoder {
-        float: left;
-        padding: 50px;
-        font-size: 30px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+    }
+    #map-geocoder .mapboxgl-ctrl-geocoder {
+        width: auto;
+        max-width: none;
+        flex-grow: 1;
+    }
+    #search-btn {
+        order: 2;
     }
 </style>
 
-<div id="map"></div> <!-- este div tiene todo el mapa dentro -->
+<!-- elementos -->
 
-<div id="map-geocoder"></div>
+<div id="map"></div>
+
+<div id="map-geocoder"> <!-- barra y boton de busqueda -->
+    <button 
+    id="search-btn" 
+    style="
+        padding: 8px 15px; 
+        border-radius: 8px; 
+        cursor: pointer; 
+        font-weight: 600;
+    ">
+    Buscar
+    </button>
+</div>
+
+<!-- filtros -->
 
 <div id="material_checkboxes">
     <input type="checkbox" id="material_glass" name="material_glass" value="Vidrio">
-    <label for="material_glass">Vidrio<br>
+    <label for="material_glass">Vidrio</label><br>
     <input type="checkbox" id="material_paper" name="material_paper" value="Papel">
-    <label for="material_paper">Papel<br>
+    <label for="material_paper">Papel</label><br>
     <input type="checkbox" id="material_paperboard" name="material_paperboard" value="Vidrio">
-    <label for="material_paperboard">Paperboard<br>
+    <label for="material_paperboard">Paperboard</label><br>
     <input type="checkbox" id="material_tetrapack" name="material_tetrapack" value="Tetrapack">
-    <label for="material_tetrapack">Tetrapack<br>
+    <label for="material_tetrapack">Tetrapack</label><br>
     <input type="checkbox" id="material_plastic" name="material_plastic" value="Plastico">
-    <label for="material_plastic">Plastico<br>
+    <label for="material_plastic">Plastico</label><br>
     <input type="checkbox" id="material_metal" name="material_metal" value="Metal">
-    <label for="material_metal">Metal<br>
+    <label for="material_metal">Metal</label><br>
     <input type="checkbox" id="material_power_bank" name="material_power_bank" value="Batería">
-    <label for="material_power_bank">Batería<br>
+    <label for="material_power_bank">Batería</label><br>
     <input type="checkbox" id="material_phone" name="material_phone" value="Telefono">
-    <label for="material_phone">Telefono<br>        
+    <label for="material_phone">Telefono</label><br>        
 </div>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 <script src="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.min.js"></script>
 
+<!-- api del mapa -->
+
 <script>
-    const maxDist = 4 // distancia maxima de puntos limpios (km)
+    const maxDist = 4; // distancia maxima de puntos limpios (km)
+    let foundAddress = null;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidG9wYXoyMjIwIiwiYSI6ImNtdnBwcjk0OTAxNTYyenExZ2JkZG5vZXcifQ.ddSZ_pK1T0Tv3YqOhEWXGQ';
 
@@ -77,21 +104,20 @@
         mapboxgl: mapboxgl,
         marker: true,
         placeholder: 'Buscar dirección',
-        countries: 'cl'
+        countries: 'cl',
+        flyTo: false
     });
 
-    //map.addControl(geocoder); --
     geocoder.addTo("#map-geocoder");
 
     let apiMarkers = [];
-    let materials = [];
 
     function clearApiMarkers() {
         apiMarkers.forEach(marker => marker.remove());
         apiMarkers = [];
     }
 
-    function getCheckedAsUrlParamsWithoutPrefix() {
+    function nameToKey() {
         const checkedCheckboxes = document.querySelectorAll('#material_checkboxes input[type="checkbox"]:checked');
 
         const urlParams = Array.from(checkedCheckboxes)
@@ -104,13 +130,27 @@
         return urlParams ? `&${urlParams}` : '';
     }
 
-    geocoder.on('result', async (e) => {
-        const [lng, lat] = e.result.geometry.coordinates;
+    geocoder.on('result', (e) => {
+        foundAddress = e.result;
+    });
+
+    geocoder.on('clear', () => {
+        foundAddress = null;
+    });
+
+    async function executeSearch(result) {
+        const [lng, lat] = result.geometry.coordinates;
+
+        if (result.bbox) {
+            map.fitBounds(result.bbox, { padding: 50, maxZoom: 15 });
+        } else {
+            map.flyTo({ center: [lng, lat], zoom: 14 });
+        }
 
         clearApiMarkers();
 
         try {
-            const apiUrl = `http://127.0.0.1:8000/puntoslimpios?lat=${lat}&long=${lng}&dist=${maxDist}${getCheckedAsUrlParamsWithoutPrefix()}`;
+            const apiUrl = `http://127.0.0.1:8000/puntoslimpios?lat=${lat}&long=${lng}&dist=${maxDist}${nameToKey()}`;
             const response = await fetch(apiUrl);
             const data = await response.json();
 
@@ -136,7 +176,30 @@
 
         } catch (error) {
             console.error('No se han podido obtener los marcadores:', error);
+        } finally {
+            geocoder.lastSelected = null;
         }
+    }
+
+    document.getElementById('search-btn').addEventListener('click', async () => {
+        const inputElement = document.querySelector('#map-geocoder .mapboxgl-ctrl-geocoder--input');
+        const queryText = inputElement ? inputElement.value.trim() : '';
+
+        if (!queryText) return;
+
+        if (foundAddress) {
+            await executeSearch(foundAddress);
+            return;
+        }
+
+        const handleManualResult = async (e) => {
+            geocoder.off('result', handleManualResult);
+            foundAddress = e.result;
+            await executeSearch(e.result);
+        };
+
+        geocoder.on('result', handleManualResult);
+        geocoder.query(queryText);
     });
 </script>
 {% endblock %}
