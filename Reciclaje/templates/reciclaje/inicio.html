@@ -5,8 +5,19 @@
 {% block content %}
     <h2>Bienvenido a la página de reciclaje</h2>
     <p>Proyecto de reciclaje y comunidad</p>
+    
     <p>
-        <button onclick="abrirModal()" style="padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600;">Iniciar sesión</button>
-        &nbsp;¿Eres nuevo? <a href="{% url 'register' %}" style="color: #7CFC00;">Crea tu cuenta</a>
+        {% if user.is_authenticated %}
+            
+            <span style="font-weight: 600; color: #2e7d32;">¡Qué bueno verte de nuevo, {{ user.username }}!</span>
+            <br><br>
+            <a href="{% url 'mapa' %}" style="padding: 10px 20px; background-color: #2e7d32; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">
+                Ir a Buscar Puntos Limpios
+            </a>
+        {% else %}
+            
+            <button onclick="abrirModal()" style="padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600;">Iniciar sesión</button>
+            &nbsp;¿Eres nuevo? <a href="{% url 'register' %}" style="color: #7CFC00;">Crea tu cuenta</a>
+        {% endif %}
     </p>
 {% endblock %}
