@@ -23,12 +23,20 @@
         color: #000000
     }
     #material_checkboxes {
-        float: right;
-        font-size: 40px;
+        float: left;
+        padding: 50px;
+        font-size: 30px;
+    }
+    #map-geocoder {
+        float: left;
+        padding: 50px;
+        font-size: 30px;
     }
 </style>
 
 <div id="map"></div> <!-- este div tiene todo el mapa dentro -->
+
+<div id="map-geocoder"></div>
 
 <div id="material_checkboxes">
     <input type="checkbox" id="material_glass" name="material_glass" value="Vidrio">
@@ -72,7 +80,8 @@
         countries: 'cl'
     });
 
-    map.addControl(geocoder);
+    //map.addControl(geocoder); --
+    geocoder.addTo("#map-geocoder");
 
     let apiMarkers = [];
     let materials = [];
