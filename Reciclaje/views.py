@@ -11,8 +11,6 @@ from .forms import RegistroForm
 
 
 def inicio(request):
-    if request.user.is_authenticated:
-        return redirect('mapa')
     return render(request, 'reciclaje/inicio.html')
 
 

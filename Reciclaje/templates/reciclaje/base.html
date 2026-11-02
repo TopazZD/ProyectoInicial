@@ -19,7 +19,7 @@
         <!--LOGO-->
         <a href="{% url 'inicio' %}" class="logo">
             <span>ECO</span>
-            <img src="{% static 'reciclaje/img/OIG3.webp'%}"
+            <img src="{% static 'reciclaje/img/OIG3.3.jfif'%}"
             alt="logo ECOVECINOS">
 
             <span>VECINOS</span>
@@ -42,12 +42,12 @@
                 </span>
             
 
-                <from method="post" action="{% url 'logout' %}">
+                <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
                     <button type="submit" class="btn-login">
                         Cerrar Sesión
                     </button>
-                </from>
+                </form>
             {% else %}
                 <a href="{% url 'login'}" class="btn-login">
                     Iniciar Sesión
