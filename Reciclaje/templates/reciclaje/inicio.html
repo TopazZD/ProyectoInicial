@@ -1,23 +1,35 @@
 {% extends "reciclaje/base.html" %}
+{% load static %}
 
 {% block title %}ECOVECINOS{% endblock %}
 
 {% block content %}
-    <h2>Bienvenido a la página de reciclaje</h2>
-    <p>Proyecto de reciclaje y comunidad</p>
-    
-    <p>
-        {% if user.is_authenticated %}
+    <!-- Contenedor principal con la imagen de fondo y altura limitada -->
+    <div style="position: relative; width: 100%; height: 320px; overflow: hidden;">
+        
+        <!-- Imagen de fondo de esquina a esquina -->
+        <img src="{% static 'reciclaje/img/memu.jpg' %}" alt="Punto Limpio Eco Vecinos" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        
+        <!-- Capa oscura opcional para que el texto se lea mejor sobre la ilustración -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4);"></div>
+
+        <!-- Texto y botones flotando ENCIMA de la imagen -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0 50px; color: #ffffff; z-index: 2;">
+            <h2 style="font-size: 32px; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">Bienvenido a la página de reciclaje</h2>
+            <p style="font-size: 18px; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Proyecto de reciclaje y comunidad</p>
             
-            <span style="font-weight: 600; color: #2e7d32;">¡Qué bueno verte de nuevo, {{ user.username }}!</span>
-            <br><br>
-            <a href="{% url 'mapa' %}" style="padding: 10px 20px; background-color: #2e7d32; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block;">
-                Ir a Buscar Puntos Limpios
-            </a>
-        {% else %}
-            
-            <button onclick="abrirModal()" style="padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600;">Iniciar sesión</button>
-            &nbsp;¿Eres nuevo? <a href="{% url 'register' %}" style="color: #7CFC00;">Crea tu cuenta</a>
-        {% endif %}
-    </p>
+            <div>
+                {% if user.is_authenticated %}
+                    <span style="font-weight: 600; color: #7CFC00; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">¡Qué bueno verte de nuevo, {{ user.username }}!</span>
+                    <br><br>
+                    <a href="{% url 'mapa' %}" style="padding: 10px 20px; background-color: #2e7d32; color: white; text-decoration: none; border-radius: 8px; font-weight: 600; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">
+                        Ir a Buscar Puntos Limpios
+                    </a>
+                {% else %}
+                    <button onclick="abrirModal()" style="padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: 600; background-color: #ffffff; border: none;">Iniciar sesión</button>
+                    &nbsp;¿Eres nuevo? <a href="{% url 'register' %}" style="color: #7CFC00; font-weight: 600; text-decoration: underline;">Crea tu cuenta</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
