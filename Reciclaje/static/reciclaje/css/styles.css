@@ -109,3 +109,22 @@ body {
         justify-content: center;
     }
 }
+
+/* ENCABEZADO PAGINA DEL MAPA */
+.mapa-encabezado {
+    padding: 40px 6% 25px;
+    background-color: #f6f8f3;
+}
+
+.mapa-encabezado h1 {
+    font-size: 36px;
+    font-weight: 700;
+    color: #173d29;
+    margin-bottom: 10px;
+}
+
+.mapa-encabezado p {
+    font-size: 16px;
+    color: #66736b;
+    line-height: 1.5;
+}

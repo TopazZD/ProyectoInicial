@@ -3,8 +3,13 @@
 {% block title %}ECOVECINOS{% endblock %}
 
 {% block content %}
-    <h2><span style="color: #ffffff; margin-top: 10px;">Bienvenido a la página de reciclaje</span></h2>
-    <p style="color: #ffffff; margin-top: 10px;">pues chad no?</p>
+<section class="mapa-encabezado">
+    <h1> Encuentra tu punto limpio</h1>
+    <p>
+        Busca lugares cercanos a tu ubicación y filtra según el material que deseas reciclar.
+    </p>
+</section>
+    
 {% endblock %}
 
 {% block mapa %}
@@ -14,75 +19,177 @@
 <!-- estilos de la pagina -->
 
 <style>
-    #map {
-        height: 500px;
-        width: 50%;
-        float: left;
+    .mapa-layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 24px;
+        padding: 10px 6% 50px;
+        background: #f6f8f3;
+        align-items: start;
     }
-    #marker_popup {
-        color: #000000
+
+    .panel-filtros,
+    .panel-mapa {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     }
-    #material_checkboxes {
-        float: left;
-        padding: 50px;
-        font-size: 30px;
+
+    .panel-filtros {
+        padding: 25px;
     }
+
+    .panel-filtros h2 {
+        font-size: 20px;
+        color: #173d29;
+        margin-bottom: 14px;
+    }
+
+    .filtros-descripcion {
+        font-size: 13px;
+        color: #68756c;
+        margin-bottom: 16px;
+    }
+
     #map-geocoder {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 28px;
+        min-width: 0;
+    }
+
+    #map-geocoder .mapboxgl-ctrl-geocoder {
+        flex:1;
+        width: 100%;
+        min-width: 0;
+        max-width: none;
+    }
+
+    #search-btn {
+        border: none;
+        background: #287a3d;
+        color: white;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font-weight: 600;
+        cursor: pointer;
+    }
+
+    #material_checkboxes {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    #material_checkboxes label {
         display: flex;
         align-items: center;
         gap: 10px;
-        padding: 20px;
+        font-size: 16px;
+        cursor: pointer;
     }
-    #map-geocoder .mapboxgl-ctrl-geocoder {
-        width: auto;
-        max-width: none;
-        flex-grow: 1;
+
+    #material_checkboxes input {
+        accent-color: #287a3d;
+        width: 17px;
+        height: 17px;
     }
-    #search-btn {
-        order: 2;
+
+    .panel-mapa {
+        overflow: hidden;
+        min-width: 0;
+        border-radius: 20px;
     }
+
+    #map {
+        height: 650px;
+        width: 100%;
+    }
+
+    #marker_popup {
+        color: #222;
+    }
+
+    @media (max-width: 900px) {
+        .mapa-layout {
+            grid-template-columns: 1fr;
+        }
+
+        #map {
+            height: 450px;
+        }
+    }
+    
 </style>
 
-<!-- elementos -->
+<!-- contenedor principal -->
+ <section class="mapa-layout">
+    <!-- panel izquierdo -->
+     <aside class="panel-filtros">
+        <h2> Buscar ubicación </h2>
 
-<div id="map"></div>
+        <!-- geocoder mapbox insertarlo aca -->
+         <div id ="map-geocoder">
+            <button id ="search-btn" type="button">
+                Buscar
+            </button>
+         </div>
+         
+         <h2> Materiales</h2>
+         <p class="filtros-descripcion">
+            Selecciona los materiales que deseas reciclar.
+         </p>
+         
+         <div id="material_checkboxes">
+            <label>
+                <input type="checkbox" id="material_glass" name="material_glass" value="Vidrio">
+                Vidrio
+            </label>
 
-<div id="map-geocoder"> <!-- barra y boton de busqueda -->
-    <button 
-    id="search-btn" 
-    style="
-        padding: 8px 15px; 
-        border-radius: 8px; 
-        cursor: pointer; 
-        font-weight: 600;
-    ">
-    Buscar
-    </button>
-</div>
+            <label>
+                <input type="checkbox" id="material_paper" name="material_paper" value="Papel">
+                Papel
+            </label>
 
-<div style="margin: 1px 0; font-weight: 600; color: #333;">
-    <h3>ㅤㅤ Selecciona los materiales a filtrar:</h3>
-</div>
-<!-- filtros -->
+            <label>
+                <input type="checkbox" id="material_paperboard" name="material_paperboard" value="Cartón">
+                Cartón
+            </label>
 
-<div id="material_checkboxes">
-    <input type="checkbox" id="material_glass" name="material_glass" value="Vidrio">
-    <label for="material_glass">Vidrio</label><br>
-    <input type="checkbox" id="material_paper" name="material_paper" value="Papel">
-    <label for="material_paper">Papel</label><br>
-    <input type="checkbox" id="material_paperboard" name="material_paperboard" value="Vidrio">
-    <label for="material_paperboard">Paperboard</label><br>
-    <input type="checkbox" id="material_tetrapack" name="material_tetrapack" value="Tetrapack">
-    <label for="material_tetrapack">Tetrapack</label><br>
-    <input type="checkbox" id="material_plastic" name="material_plastic" value="Plastico">
-    <label for="material_plastic">Plastico</label><br>
-    <input type="checkbox" id="material_metal" name="material_metal" value="Metal">
-    <label for="material_metal">Metal</label><br>
-    <input type="checkbox" id="material_power_bank" name="material_power_bank" value="Batería">
-    <label for="material_power_bank">Batería</label><br>
-    <input type="checkbox" id="material_phone" name="material_phone" value="Telefono">
-    <label for="material_phone">Telefono</label><br>        
-</div>
+            <label>
+                <input type="checkbox" id="material_tetrapack" name="material_tetrapack" value="Tetrapack">
+                Tetrapack
+            </label>
+
+            <label>
+                <input type="checkbox" id="material_plastic" name="material_plastic" value="Plástico">
+                Plástico
+            </label>
+
+            <label>
+                <input type="checkbox" id="material_metal" name="material_metal" value="Metal">
+                Metal
+            </label>
+
+            <label>
+                <input type="checkbox" id="material_power_bank" name="material_power_bank" value="Batería">
+                Batería
+            </label>
+
+            <label>
+                <input type="checkbox" id="material_phone" name="material_phone" value="Teléfono">
+                Teléfono
+            </label>
+
+         </div>
+
+     </aside>
+
+     <!-- panel derecho-->
+      <div class="panel-mapa">
+        <div id="map"></div>
+      </div>
+ </section>
 
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.3.0/mapbox-gl.js"></script>
 <script src="https://unpkg.com/@mapbox/mapbox-gl-geocoder@5.0.1/dist/mapbox-gl-geocoder.min.js"></script>
