@@ -27,14 +27,11 @@
         <!--ENLACES-->
         <nav class="nav-links">
             <a href="{% url 'inicio'%}">Inicio</a>
+            <a href="{% url 'mapa'%}">Buscar Puntos Limpios</a>
             <a href="#como-reciclar">Cómo Reciclar</a>
         </nav>
         <!--BOTONES-->
         <div class="nav-actions">
-            <a href="{% url 'mapa' %}" class="btn-puntos">
-                Buscar Puntos Limpios
-            </a>
-
             {% if user.is_authenticated %}
                 <span class="usuario">
                     Hola, {{user.username}}
