@@ -1,7 +1,6 @@
 import json
 
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -25,8 +24,6 @@ def register(request):
         form = RegistroForm()
     return render(request, 'reciclaje/registro.html', {'form': form})
 
-
-@login_required
 def mapa(request):
     comuna = ''
     if hasattr(request.user, 'perfil'):

@@ -204,5 +204,22 @@
         geocoder.on('result', handleManualResult);
         geocoder.query(queryText);
     });
+
+"Prebusca la comuna ingresada por el usuario"
+const comunaUsuario = "{{ comuna|escapejs }}";
+
+if (comunaUsuario) {
+    map.on('load', () => {
+        const handleAutoResult = async (e) => {
+            geocoder.off('result', handleAutoResult);
+            foundAddress = e.result;
+            await executeSearch(e.result);
+        };
+
+        geocoder.on('result', handleAutoResult);
+        geocoder.query(comunaUsuario + ', Chile');
+    });
+}
+
 </script>
 {% endblock %}
