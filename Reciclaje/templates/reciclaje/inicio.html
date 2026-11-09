@@ -15,8 +15,8 @@
 
         <!-- Texto flotando ENCIMA de la imagen -->
         <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; padding: 0 50px; color: #ffffff; z-index: 2;">
-            <h2 style="font-size: 32px; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">Bienvenido a EcoVecinos</h2>
-            <p style="font-size: 18px; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Un Proyecto de reciclaje para la comunidad</p>
+            <h2 style="font-size: 32px; margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);">Bienvenido a la página de reciclaje</h2>
+            <p style="font-size: 18px; margin-bottom: 15px; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">Proyecto de reciclaje y comunidad</p>
             
             {% if user.is_authenticated %}
                 <span style="font-weight: 600; color: #7CFC00; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);">¡Qué bueno verte de nuevo, {{ user.username }}!</span>
@@ -29,31 +29,60 @@
         </div>
     </div>
 
-    <!-- 2. BLOQUE INFERIOR CON BOTONES E INFORMACIÓN ORDENADA -->
-    <div style="padding: 40px 60px; background-color: #ffffff;">
-        <div style="display: flex; justify-content: space-around; gap: 40px; flex-wrap: wrap; max-width: 1100px; margin: 0 auto;">
+    <!-- 2. BLOQUE INFERIOR CON TARJETAS DE DISEÑO RECOMENDADO -->
+    <div style="padding: 60px 30px; background-color: #f9f9f9;">
+        <div style="display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;">
             
-            <!-- Columna 1: Buscar Puntos Limpios -->
-            <div style="flex: 1; min-width: 280px; max-width: 450px; display: flex; flex-direction: column; align-items: flex-start;">
-                <a href="{% url 'mapa' %}" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; background-color: #ffffff; color: rgb(0, 0, 0); text-decoration: none; border-radius: 10px; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.2); border: 2px solid #236127;">
-                    <img src="{% static 'reciclaje/img/pinubi.webp' %}" alt="Ubicación" style="width: 28px; height: 28px; object-fit: contain;" onerror="this.style.display='none'">
-                    <span>Buscar Puntos Limpios</span>
-                </a>
-                <p style="margin-top: 15px; color: #000000; font-size: 15px; line-height: 1.5;">
-                    ¿No sabes dónde desechar tus residuos correctamente? Encuentra los contenedores y puntos de reciclaje más cercanos a tu ubicación de forma rápida y ayuda a mantener tu comunidad limpia.
-                </p>
+            <!-- Tarjeta 1: Buscar Puntos Limpios (Cliqueable) -->
+            <a href="{% url 'mapa' %}" style="flex: 1; min-width: 300px; max-width: 360px; text-decoration: none; color: inherit; display: flex; flex-direction: column; background-color: #ffffff; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; box-sizing: border-box;" 
+               onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.12)';" 
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.08)';"
+               title="Haz clic para buscar puntos limpios">
+                <!-- Cabecera de la Tarjeta con Fondo de Color -->
+                <div style="background-color: #2e7d32; padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <img src="{% static 'reciclaje/img/pinubi.png' %}" alt="Ubicación" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 15px;" onerror="this.style.display='none'">
+                    <span style="font-weight: 700; color: #ffffff; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">Buscar Puntos Limpios</span>
+                </div>
+                <!-- Cuerpo de la Tarjeta (Texto Negro Limpio) -->
+                <div style="padding: 30px; flex-grow: 1;">
+                    <p style="margin: 0; color: #000000; font-size: 15px; line-height: 1.6;">
+                        ¿No sabes dónde desechar tus residuos correctamente? Encuentra los contenedores y puntos de reciclaje más cercanos a tu ubicación de forma rápida y ayuda a mantener tu comunidad limpia.
+                    </p>
+                </div>
+            </a>
+
+            <!-- Tarjeta 2: Comunidad (Informativa, Misma estética) -->
+            <div style="flex: 1; min-width: 300px; max-width: 360px; display: flex; flex-direction: column; background-color: #ffffff; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); overflow: hidden; box-sizing: border-box;">
+                <!-- Cabecera de la Tarjeta con Fondo de Color (Gris/Verde Oscuro para distinguir) -->
+                <div style="background-color: #455a64; padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <img src="{% static 'reciclaje/img/comunismo.png' %}" alt="Comunidad" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 15px;" onerror="this.style.display='none'">
+                    <span style="font-weight: 700; color: #ffffff; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">Comunidad</span>
+                </div>
+                <!-- Cuerpo de la Tarjeta (Texto Negro Limpio) -->
+                <div style="padding: 30px; flex-grow: 1;">
+                    <p style="margin: 0; color: #000000; font-size: 15px; line-height: 1.6;">
+                        Este proyecto fue creado con el fin de ayudar a conectar a los vecinos en el cuidado del entorno, facilitando el acceso a información clara sobre gestión de residuos y fomentando una cultura sustentable colaborativa en cada barrio.
+                    </p>
+                </div>
             </div>
 
-            <!-- Columna 2: Cómo Reciclar -->
-            <div style="flex: 1; min-width: 280px; max-width: 450px; display: flex; flex-direction: column; align-items: flex-start;">
-                <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 12px 25px; background-color: #ffffff; color: rgb(0, 0, 0); text-decoration: none; border-radius: 10px; font-weight: 600; box-shadow: 0 4px 6px rgba(0,0,0,0.2); border: 2px solid #13362b;">
-                    <img src="{% static 'reciclaje/img/reci.jfif' %}" alt="Reciclaje" style="width: 28px; height: 28px; object-fit: contain;" onerror="this.style.display='none'">
-                    <span>Cómo Reciclar</span>
-                </a>
-                <p style="margin-top: 15px; color: #000000; font-size: 15px; line-height: 1.5;">
-                    ¿Alguna vez te has preguntado si realmente haces lo suficiente por el medio ambiente? Aprende las mejores prácticas, separa tus materiales adecuadamente y descubre el impacto real de cada acción que tomas.
-                </p>
-            </div>
+            <!-- Tarjeta 3: Cómo Reciclar (Cliqueable) -->
+            <a href="#" style="flex: 1; min-width: 300px; max-width: 360px; text-decoration: none; color: inherit; display: flex; flex-direction: column; background-color: #ffffff; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; box-sizing: border-box;" 
+               onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.12)';" 
+               onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.08)';"
+               title="Haz clic para aprender cómo reciclar">
+                <!-- Cabecera de la Tarjeta con Fondo de Color (Verde Oscuro) -->
+                <div style="background-color: #1b4d3e; padding: 25px; display: flex; flex-direction: column; align-items: center; text-align: center;">
+                    <img src="{% static 'reciclaje/img/reci.png' %}" alt="Reciclaje" style="width: 50px; height: 50px; object-fit: contain; margin-bottom: 15px;" onerror="this.style.display='none'">
+                    <span style="font-weight: 700; color: #ffffff; font-size: 18px; text-transform: uppercase; letter-spacing: 1px;">Cómo Reciclar</span>
+                </div>
+                <!-- Cuerpo de la Tarjeta (Texto Negro Limpio) -->
+                <div style="padding: 30px; flex-grow: 1;">
+                    <p style="margin: 0; color: #000000; font-size: 15px; line-height: 1.6;">
+                        ¿Alguna vez te has preguntado si realmente haces lo suficiente por el medio ambiente? Aprende las mejores prácticas, separa tus materiales adecuadamente y descubre el impacto real de cada acción que tomas.
+                    </p>
+                </div>
+            </a>
 
         </div>
     </div>
