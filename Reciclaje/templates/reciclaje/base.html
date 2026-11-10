@@ -7,36 +7,34 @@
     <title>{% block title %}ECOVECINOS{% endblock %}</title>
 
     <!-- FUENTE POPPINS-->
-     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{% static 'reciclaje/css/styles.css' %}">
 </head>
 
 <body>
     <!-- BARRA DE NAVEGACION -->
-     <header class="navbar">
+    <header class="navbar">
         <!--LOGO-->
         <a href="{% url 'inicio' %}" class="logo">
             <span>ECO</span>
-            <img src="{% static 'reciclaje/img/OIG3.3.png'%}"
-            alt="logo ECOVECINOS">
-
+            <img src="{% static 'reciclaje/img/OIG3.3.png'%}" alt="logo ECOVECINOS">
             <span>VECINOS</span>
         </a>
+
         <!--ENLACES-->
         <nav class="nav-links">
             <a href="{% url 'inicio'%}">Inicio</a>
             <a href="{% url 'mapa'%}">Buscar Puntos Limpios</a>
             <a href="#como-reciclar">Cómo Reciclar</a>
         </nav>
-        <!--BOTONES-->
-        <div class="nav-actions">
+
+        <!--BOTONES Y REGISTRO-->
+        <div class="nav-actions" style="display: flex; align-items: center; gap: 15px;">
             {% if user.is_authenticated %}
                 <span class="usuario">
                     Hola, {{user.username}}
                 </span>
-            
 
                 <form method="post" action="{% url 'logout' %}">
                     {% csrf_token %}
@@ -45,20 +43,25 @@
                     </button>
                 </form>
             {% else %}
+                <!-- ENLACE DE REGISTRO ENTRE CÓMO RECICLAR E INICIAR SESIÓN -->
+                <span style="font-size: 14px; color: #ffffff; text-shadow: 1px 1px 3px rgba(0,0,0,0.8);">
+                    ¿Eres nuevo? <a href="{% url 'register' %}" style="color: #7CFC00; font-weight: 700; text-decoration: underline;">Crea tu cuenta</a>
+                </span>
+
                 <a href="{% url 'login'%}" class="btn-login">
                     Iniciar Sesión
                 </a>
             {% endif %}
         </div>
-     </header>
+    </header>
 
-     <!--CONTENIDO PRINCIPAL-->
-     <main>
+    <!--CONTENIDO PRINCIPAL-->
+    <main>
         {% block content%}
         {% endblock %}
 
         {% block mapa %}
         {% endblock %}
-     </main>
+    </main>
 </body>
 </html>
