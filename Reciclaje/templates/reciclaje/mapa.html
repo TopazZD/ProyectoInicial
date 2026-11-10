@@ -181,7 +181,7 @@
                 Teléfonos
             </label>
 
-         </div>
+        </div>
 
      </aside>
 
@@ -201,6 +201,8 @@
     mapboxgl.accessToken = 'pk.eyJ1IjoidG9wYXoyMjIwIiwiYSI6ImNtdnBwcjk0OTAxNTYyenExZ2JkZG5vZXcifQ.ddSZ_pK1T0Tv3YqOhEWXGQ';
     let foundAddress = null;
     let apiMarkers = [];
+    let currentOriginCoords = null;
+
     const materialStrings = new Map();
     materialStrings.set("glass", "Vidrio")
     materialStrings.set("paper", "Papel")
@@ -218,6 +220,47 @@
         center: [-70.647827, -33.459204],
     });
 
+    map.on('load', () => {
+        map.addSource('route', {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                    type: 'LineString',
+                    coordinates: []
+                }
+            }
+        });
+
+        map.addLayer({
+            id: 'route-line',
+            type: 'line',
+            source: 'route',
+            layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            paint: {
+                'line-color': '#287a3d',
+                'line-width': 5,
+                'line-opacity': 0.75
+            }
+        });
+
+        // Pre-busca la comuna ingresada por el usuario si existe
+        if (comunaUsuario) {
+            const handleAutoResult = async (e) => {
+                geocoder.off('result', handleAutoResult);
+                foundAddress = e.result;
+                await executeSearch(e.result);
+            };
+
+            geocoder.on('result', handleAutoResult);
+            geocoder.query(comunaUsuario + ', Chile');
+        }
+    });
+
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
@@ -229,10 +272,16 @@
 
     geocoder.addTo("#map-geocoder");
 
-
     function clearApiMarkers() {
         apiMarkers.forEach(marker => marker.remove());
         apiMarkers = [];
+        if (map.getSource('route')) {
+            map.getSource('route').setData({
+                type: 'Feature',
+                properties: {},
+                geometry: { type: 'LineString', coordinates: [] }
+            });
+        }
     }
 
     function nameToKey() {
@@ -254,10 +303,39 @@
 
     geocoder.on('clear', () => {
         foundAddress = null;
+        currentOriginCoords = null;
+        clearApiMarkers();
     });
+
+    // dibuja la ruta con la api de mapbox
+    async function drawRoute(destinationLngLat) {
+        if (!currentOriginCoords) return;
+
+        const start = currentOriginCoords.join(',');
+        const end = destinationLngLat.join(',');
+        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${start};${end}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (data.routes && data.routes.length > 0) {
+                const routeGeoJSON = data.routes[0].geometry;
+                
+                map.getSource('route').setData({
+                    type: 'Feature',
+                    properties: {},
+                    geometry: routeGeoJSON
+                });
+            }
+        } catch (error) {
+            console.error('Error al obtener la ruta:', error);
+        }
+    }
 
     async function executeSearch(result) {
         const [lng, lat] = result.geometry.coordinates;
+        currentOriginCoords = [lng, lat];
 
         if (result.bbox) {
             map.fitBounds(result.bbox, { padding: 50, maxZoom: 15 });
@@ -291,6 +369,10 @@
                     .setPopup(popup)
                     .addTo(map);
 
+                marker.getElement().addEventListener('click', () => {
+                    drawRoute(itemLngLat);
+                });
+
                 apiMarkers.push(marker);
             });
 
@@ -322,21 +404,6 @@
         geocoder.query(queryText);
     });
 
-"Prebusca la comuna ingresada por el usuario"
-const comunaUsuario = "{{ comuna|escapejs }}";
-
-if (comunaUsuario) {
-    map.on('load', () => {
-        const handleAutoResult = async (e) => {
-            geocoder.off('result', handleAutoResult);
-            foundAddress = e.result;
-            await executeSearch(e.result);
-        };
-
-        geocoder.on('result', handleAutoResult);
-        geocoder.query(comunaUsuario + ', Chile');
-    });
-}
-
+    const comunaUsuario = "{{ comuna|escapejs }}";
 </script>
 {% endblock %}
