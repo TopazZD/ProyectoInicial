@@ -12,6 +12,8 @@ from .forms import RegistroForm
 def inicio(request):
     return render(request, 'reciclaje/inicio.html')
 
+def info_reciclaje(request):
+    return render(request, 'reciclaje/info_reciclaje.html')
 
 def register(request):
     if request.method == 'POST':
