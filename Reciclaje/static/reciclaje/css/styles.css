@@ -132,10 +132,16 @@ body {
 /* SECCION DE COMO RECICLAR */
 .reciclaje-pagina {
     min-height: 100vh;
-    background: #f5f8f3;
     padding: 50px 6% 70px;
     font-family: inherit;
+    background-color: #70c92b;
+    background-image: url("../img/reciclajefoto.png");
+    background-size: 100% auto;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
+
 
 .reciclaje-encabezado {
     text-align: center;
@@ -266,13 +272,13 @@ body {
     line-height: 1.6;
 }
 
-@media (max.width:700px) {
+@media (max-width:700px) {
     .reciclaje-pagina {
         padding: 30px 5%;
     }
 
     .reciclaje-encabezado h1 {
-        font.size: 28px;
+        font-size: 28px;
     }
 
     .reciclaje-buscador-panel,
