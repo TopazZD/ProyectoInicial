@@ -62,3 +62,19 @@ def puntoslimpios(request):
         return JsonResponse(data, safe=False)
     except Exception:
         return JsonResponse({"Error": "No se han podido obtener resultados con los datos dados"})
+
+
+from .materiales import filtrar_por_material, buscar_producto, MATERIALES
+
+def como_reciclar(request):
+    texto = request.GET.get("q", "")
+    filtros = request.GET.getlist("filter")
+
+    if texto:
+        data = buscar_producto(texto, filtros or None)
+    elif filtros:
+        data = filtrar_por_material(filtros)
+    else:
+        data = MATERIALES
+
+    return JsonResponse(data, safe=False)

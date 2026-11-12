@@ -9,5 +9,41 @@
         aqui se aprende
     </p>
 </section>
-    
+
+<section>
+    <input type="text" id="buscador" placeholder="Ej: botella, pila, caja..."
+           style="padding: 10px; width: 100%; max-width: 400px; border-radius: 8px; border: 1px solid #999;">
+
+    <ul id="resultados"></ul>
+</section>
+
+<script>
+    const input = document.getElementById('buscador');
+    const lista = document.getElementById('resultados');
+    const etiquetas = { si: 'Sí se recicla', no: 'No se recicla', depende: 'Depende del punto' };
+
+    input.addEventListener('input', async () => {
+        const texto = input.value.trim();
+        lista.innerHTML = '';
+        if (!texto) return;
+
+        try {
+            const resp = await fetch(`{% url 'api_materiales' %}?q=${encodeURIComponent(texto)}`);
+            const data = await resp.json();
+
+            if (data.length === 0) {
+                lista.innerHTML = '<li>No se encontraron resultados.</li>';
+                return;
+            }
+
+            data.forEach(p => {
+                const li = document.createElement('li');
+                li.textContent = `${p.nombre} (${p.material}): ${etiquetas[p.se_recicla]}. ${p.nota}`;
+                lista.appendChild(li);
+            });
+        } catch (error) {
+            console.error('No se pudo buscar:', error);
+        }
+    });
+</script>
 {% endblock %}

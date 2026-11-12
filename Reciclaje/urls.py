@@ -10,4 +10,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('info_reciclaje', views.info_reciclaje, name='info_reciclaje'),
     path('puntoslimpios', views.puntoslimpios, name='puntoslimpios'),
+    path('api/materiales/', views.como_reciclar, name='api_materiales'),
 ]
