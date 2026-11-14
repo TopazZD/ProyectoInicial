@@ -3,11 +3,30 @@
 {% block title %}Crear cuenta{% endblock %}
 
 {% block content %}
-    <h2>Crear cuenta</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Registrarme</button>
-    </form>
-    <p><a href="{% url 'login' %}" style="color: #7CFC00;">Ya tengo cuenta</a></p>
+ <section class="pagina-auth">
+    <div class="tarjeta-auth">
+        <h2>¡Únete a ECOVECINOS!</h2>
+        <p class="auth-descripcion">
+            Crea una cuenta y comienza a cuidar el planeta.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="campos-auth">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="boton-auth">
+                Crear mi cuenta
+            </button>
+        </form>
+
+        <p class="auth-enlace">
+            ¿Ya tienes una cuenta?
+            <a href="{% url 'login' %}">
+                Inicia sesión aquí
+            </a>
+        </p>
+    </div>
+ </section>
 {% endblock %}

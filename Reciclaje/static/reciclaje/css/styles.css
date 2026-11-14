@@ -286,3 +286,127 @@ body {
         padding: 20px;
     }
 }
+
+
+/* pagina de iniciar sesion */
+.pagina-auth {
+    min-height: 85vh;
+    background-color: #e7f4e5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.tarjeta-auth {
+    background-color: white;
+    width: 100%;
+    max-width: 600px;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.10);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.tarjeta-auth h2 {
+    color: #195c36;
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.auth-descripcion {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.campos-auth p {
+    text-align: left;
+    margin-bottom: 18px;
+}
+
+.campos-auth label {
+    display: block;
+    margin-bottom: 7px;
+    font-weight: 600;
+    color: #234b35;
+}
+
+.campos-auth input,
+.campos-auth select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd8cc;
+    border-radius: 8px;
+    font-size: 15px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+.campos-auth input:focus,
+.campos-auth select:focus {
+    outline: none;
+    border-color: #328344;
+}
+
+.boton-auth {
+    width: 100%;
+    padding: 13px;
+    background-color: #328344;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.boton-auth:hover {
+    background-color: #195c36;
+}
+
+.auth-enlace {
+    margin-top: 22px;
+    font-size: 14px;
+    color: #555;
+}
+
+.auth-enlace a {
+    color: #328344;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.auth-enlace a:hover {
+    text-decoration: underline;
+}
+
+/* pagina para registrarse */
+.campos-auth .helptext {
+    display: block;
+    text-align: left;
+    color: #777;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-top: 6px;
+}
+
+.campos-auth ul {
+    text-align: left;
+    padding-left: 20px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+
+.campos-auth li {
+    color: #777;
+    font-size: 12px;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+.campos-auth p {
+    margin-bottom: 20px;
+}

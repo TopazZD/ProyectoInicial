@@ -3,11 +3,29 @@
 {% block title %}Iniciar sesión{% endblock %}
 
 {% block content %}
-    <h2>Iniciar sesión</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Entrar</button>
-    </form>
-    <p>¿No tienes cuenta? <a href="{% url 'register' %}" style="color: #7CFC00;">Regístrate</a></p>
+<section class="pagina-auth">
+    <div class="tarjeta-auth">
+        <h2>¡Bienvenido de nuevo!</h2>
+        <p class="auth-descripcion">
+            Inicia sesión para seguir reciclando con ECOVECINOS.
+        </p>
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="campos-auth">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="boton-auth">
+                Iniciar sesión
+            </button>
+        </form>
+
+        <p class="auth-enlace">
+            ¿No tienes cuenta?
+            <a href="{% url 'register' %}"> Regístrate aquí </a>
+        </p>
+    </div>
+</section>
+
 {% endblock %}
